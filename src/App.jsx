@@ -1,18 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Login from "./components/auth/login/login";
+import Register from "./components/auth/register/register";
+
+import Header from "./components/header/header";
+import Home from "./components/home/Home";
+
+import { AuthProvider } from "./contexts/authContext/authContext";
+import { useRoutes, Navigate } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const routesArray = [
+    {
+      path: "/",
+      element: <Navigate to="/login" replace />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/home",
+      element: <Home />,
+    },
+    {
+      path: "*",
+      element: <Navigate to="/login" replace />,
+    },
+  ];
+  let routesElement = useRoutes(routesArray);
   return (
-    <>
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-    </>
-  )
+    <AuthProvider>
+      <Header />
+      <div className="w-full h-screen flex flex-col">{routesElement}</div>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
